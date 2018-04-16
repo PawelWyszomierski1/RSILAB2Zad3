@@ -3,6 +3,7 @@ import java.io.Serializable;
 public class InputType implements Serializable {
     int x1;
     int x2;
+    int randomValue;
     public int getX1() {
         return x1;
     }

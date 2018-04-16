@@ -3,6 +3,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class MyApp {
     public static void main(String[] args) {
@@ -14,10 +15,12 @@ public class MyApp {
         if (new String("worker").equals(args[0])) isWorker=true;
         Workerr worker;
         Registry reg;
+        Random rand = new Random();
 
         try
         {
             System.setProperty("java.rmi.server.hostname","127.0.0.1");
+            if(new String("tak").equals(args[1]))
             reg = LocateRegistry.createRegistry(1099);
 
         }
@@ -33,7 +36,7 @@ public class MyApp {
             try
             {
                 worker= new Workerr();
-                Naming.rebind("//127.0.0.1/" + args[1],worker);
+                Naming.rebind("//127.0.0.1/" + args[2],worker);
                 System.out.println("Server is registered now :)");
                 System.out.println("Press Crl+C to stop...");
             }
@@ -82,6 +85,7 @@ public class MyApp {
                 {
                     input.x1=start;
                     input.x2=start+increase;
+                    input.randomValue = rand.nextInt(100);
                     start+=increase;
                     if (i== size-1) input.x2 = maxNumberToSearch;
 
@@ -94,12 +98,15 @@ public class MyApp {
                 e.printStackTrace();
             }
             LinkedList<Integer> finalList = new LinkedList<>();
+            double sum = 0;
             for(ResultType r:result)
             {
                 finalList.addAll(r.liczby);
-                System.out.println(r.liczby.toString());
+                System.out.println(r.liczby.toString() + " " +r.randomValue);
+                sum+=r.randomValue;
             }
             System.out.println(finalList.toString());
+            System.out.println(sum/workers.size());
 
         }
 
